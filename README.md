@@ -1,4 +1,4 @@
-# apisix-plugin-demo
+# apisix-plugin-request-pipeline
 
 [![Build Status][badge-action-img]][badge-action-url]
 
@@ -9,68 +9,11 @@ get started with Apache APISIX plugin development.
 
 ## Table of contents
 - [Getting started](#getting-started)
-- [Plugin template structure](#plugin-template-structure)
-- [Sample Code](#sample-code)
-- [Testing](#testing)
-  - [Continuous integration](#continuous-integration)
 - [Useful links](#useful-links)
 
 ## Getting Started
-> Before we dive into plugin development and everything related to it,
-> a brief look at the [GitHub Template][github-public-template] is in order
 
-All you need to do is click the [`Use this template`][apisix-plugin-use-template] button (you **<ins>must be logged</ins>** in with your GitHub account).
-
-After using the template to create your own blank custom plugin project, the project is ready to be cloned to your local environment and development.
-
-[Back to TOC][TOC]
-
-## Plugin template structure
-```
-.
-├── .github/         GitHub Actions workflows and Dependabot configuration files
-├── apisix           All files in this folder will be copied and overwrite the original APISIX
-│   └── plugins/     Plugin source
-├── ci               All files in this folder will be copied and overwrite the original APISIX
-│   └── utils/       CI utils script folder
-├── t/               Test case folder
-├── LICENSE
-├── Makefile
-└── README.md        README
-```
-[Back to TOC][TOC]
-
-## Sample Code
-The prepared plugin template provides as little code as possible because it is impossible for a general scaffold to fulfill all the specific requirements for all types of plugins.
-Therefore, the template contains only the following files:
-
-```
-.
-├── apisix
-│   └── plugins/
-│       └── demo.lua
-└── t
-    └── demo/
-        └── demo.t      
-```
-
-To start with the actual implementation, you may check our [APISIX Plugin Deveolpment][apisix-plugin-develop],
-which contains an introduction to the essential parts of the plugin development.
-
-[Back to TOC][TOC]
-
-## Testing
-[Testing plugins][apisix-testing-framework] is an essential part of the plugin development to make sure that everything works as expected.
-
-### Continuous integration
-[Continuous integration][continuous-integration] (CI) depends on [GitHub Actions][github-actions], a set of workflows that make it possible to automate your testing process.
-Thanks to such automation, you can delegate the testing and verification phases to the CI and instead focus on development (and writing more tests).
-
-In the `.github/workflows` directory, you can find definitions for the following GitHub Actions workflows:
-
-- [CI](.github/workflows/ci.yml)
-  - Triggered on `push` and `pull_request` events.
-  - Run test case in [`t`](t) folder
+This APISIX plugin helps pipelining requests and responses with Lua transformers.
 
 [Back to TOC][TOC]
 
