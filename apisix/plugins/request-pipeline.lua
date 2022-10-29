@@ -96,7 +96,7 @@ function _M.access(conf, ctx)
         query = core.request.get_uri_args(ctx),
         body = req_body,
     }
-    params.headers.connection = "Keep-Alive"
+    params.headers.connection = "keep-alive"
 
     local httpc = http.new()
     httpc:set_timeout(timeout)
