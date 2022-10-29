@@ -128,6 +128,18 @@ Result:
 original request -> trans1 -> trans2
 ```
 
+One more test!
+
+```shell
+curl -i -X GET "http://127.0.0.1:9080/request-trans"
+```
+
+Result:
+
+```shell
+original request -> trans1
+```
+
 [Back to TOC][TOC]
 
 ## Useful links
