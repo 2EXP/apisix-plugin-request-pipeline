@@ -44,8 +44,8 @@ local plugin_schema = {
             items = {
                 type = "object",
                 properties = {
-                    uri = {
-                        description = "uri of the request",
+                    path = {
+                        description = "path of the request",
                         type = "string",
                         minLength = 1
                     },
@@ -55,7 +55,7 @@ local plugin_schema = {
                     },
                     return_status = return_status_schema,
                 },
-                required = {"uri"},
+                required = {"path"},
             },
         },
     },
@@ -80,6 +80,8 @@ end
 
 function _M.access(conf, ctx)
     local resp, req_body, err, ok
+    local pipeline = conf.pipeline
+    local timeout = conf.timeout
 
     req_body, err = core.request.get_body()
     if err ~= nil then
@@ -90,24 +92,26 @@ function _M.access(conf, ctx)
     local params = {
         method = ctx.var.request_method,
         headers = core.request.headers(ctx),
-        query = core.request.query(ctx),
+        query = core.request.get_uri_args(ctx),
         body = req_body,
     }
 
     local httpc = http.new()
-    httpc:set_timeout(conf.timeout)
+    httpc:set_timeout(timeout)
     ok, err = httpc:connect("127.0.0.1", ngx.var.server_port)
     if not ok then
         return 500, {error_msg = "connect to apisix failed: " .. err}
     end
 
-    local pipeline = conf.pipeline
     for _, node in ipairs(pipeline) do
-        params.uri = node.uri
+        params.path = node.path
         resp, err = httpc:request(params)
         if not resp then
             return 500, "request failed: " .. err
         end
+
+        params.method = "POST"
+        params.body = resp:read_body()
 
         if node.return_status then
             local i = tb_array_find(node.return_status, resp.status)
@@ -116,24 +120,21 @@ function _M.access(conf, ctx)
                 break
             end
         end
-
-        params.method = "POST"
-        params.body = resp.body
     end
 
-    for key, val in pairs(resp.headers) do
+    for key, value in pairs(resp.headers) do
         local lower_key = string.lower(key)
         if lower_key == "transfer-encoding"
             or lower_key == "connection" then
             goto continue
         end
 
-        core.response.set_header(key, val)
+        core.response.set_header(key, value)
 
         ::continue::
     end
 
-    return resp.status, resp.body
+    return resp.status, params.body
 end
 
 
