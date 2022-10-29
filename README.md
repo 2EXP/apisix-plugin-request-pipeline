@@ -2,11 +2,6 @@
 
 [![Build Status][badge-action-img]][badge-action-url]
 
-This repository contains a basic [Apache APISIX][apisix] plugin template to help you
-get started with Apache APISIX plugin development.
-
-> This template was designed to work with the [GitHub Action][github-actions] development environments.
-
 ## Table of contents
 - [Getting started](#getting-started)
 - [Useful links](#useful-links)
