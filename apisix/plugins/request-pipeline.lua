@@ -17,6 +17,7 @@
 local core = require("apisix.core")
 local http = require("resty.http")
 local tb_array_find = core.table.array_find
+local str_lower = string.lower
 
 
 local return_status_schema = {
@@ -124,7 +125,7 @@ function _M.access(conf, ctx)
     end
 
     for key, value in pairs(resp.headers) do
-        local lower_key = string.lower(key)
+        local lower_key = str_lower(key)
         if lower_key == "transfer-encoding"
             or lower_key == "connection" then
             goto continue
