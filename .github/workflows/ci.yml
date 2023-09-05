@@ -30,7 +30,7 @@ jobs:
 
     steps:
       - name: Check out APISIX plugins
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # workaround: solve long unix socket path causing nginx start failure.
       - name: Copy Working Directory
